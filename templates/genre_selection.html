@@ -1,0 +1,91 @@
+
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Genre Selection</title>
+    <link rel="stylesheet" href="{% static 'genre_selectiions.css' %}">
+</head>
+
+<body>
+    <header class="main-header">
+        <nav class="navbar">
+            <div class="nav-links">
+                {% if user.is_authenticated %}
+                <span class="user-greeting">
+                    Hello, {{ user.username }}!
+                </span>
+                {% endif %}
+            </div>
+        </nav>
+    </header>
+    <header class="main-header">
+        <nav class="navbar">
+            <div class="nav-links">
+                <a href="{% url 'home' %}" class="nav-item">  <i class="fas fa-home"></i> Home </a>
+                {% if user.is_authenticated %}
+                <span class="user-greeting">
+                    Hello, {{ user.username }}!
+                </span>
+                {% endif %}
+            </div>
+        </nav>
+    </header>
+
+    <div class="container">
+        <h1>Select Genres that you are interested in</h1>
+        <form method="POST" action="{% url 'get_selection' %}">
+            {% csrf_token %}
+            <div class="genres">
+                {% for genre in genres %}
+                <label class="genre-option">
+                    <input type="checkbox" name="selected_genres" value="{{ genre.name }}"> {{ genre.name }}
+                </label><br>
+                {% endfor %}
+            </div>
+
+            <button type="submit" id="submit-btn" disabled>Next</button>
+        </form>
+
+        {% if recommendations %}
+        <div class="recommendations">
+            <h3>Recommended Books</h3>
+            <ul>
+                {% for book in recommendations %}
+                <li>{{ book.book_title }} - {{ book.Category }} (Rating: {{ book.rating }})</li>
+                {% endfor %}
+            </ul>
+        </div>
+        {% endif %}
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const checkboxes = document.querySelectorAll("input[name='selected_genres']");
+            const submitBtn = document.getElementById("submit-btn");
+
+            function updateCheckboxes() {
+                const checkedBoxes = document.querySelectorAll("input[name='selected_genres']:checked");
+
+                checkboxes.forEach(checkbox => {
+                    checkbox.disabled = checkedBoxes.length >= 3 && !checkbox.checked;
+                });
+
+                submitBtn.disabled = checkedBoxes.length === 0;
+            }
+
+            checkboxes.forEach(checkbox => {
+                checkbox.addEventListener("change", updateCheckboxes);
+            });
+
+            updateCheckboxes();
+        });
+    </script>
+
+</body>
+
+</html>

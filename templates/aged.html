@@ -1,0 +1,32 @@
+
+{% extends 'base.html' %}
+
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aged-Based Recommendations</title>
+    
+    
+       
+
+    
+</head>
+<body>
+    {% block content %}
+    <link rel="stylesheet" href="{% static 'age.css' %}">
+
+    <!-- Main Content Container -->
+    <div class="container">
+        <h1>Aged-Based Recommendations</h1>
+
+        <form method="get" action="{% url 'search_results' %}">
+            <input type="text" name="title" placeholder="Enter book name" value="{{ book_name }}">
+            <input type="hidden" name="search_type" value="aged">
+            <button type="submit">Search</button>
+        </form>
+
+    </div>{% endblock %} </body>
+</html>

@@ -1,0 +1,92 @@
+/* Apply a book-themed background image */
+body {
+  font-family: Arial, sans-serif;
+  background: url('https://i.postimg.cc/NFtJzSMx/40267b35-00bc-4688-85c8-96d4f517756a.webp') no-repeat center center fixed;
+  background-size: cover;
+  color: black;
+  margin: 0;
+  padding: 0;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Style for the form wrapper with a semi-transparent background */
+.form-wrapper {
+  background: rgba(0, 0, 0, 0.7); /* Dark semi-transparent background */
+  padding: 40px;
+  border-radius: 10px;
+  width: 100%;
+  max-width: 700px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+  color: black;
+}
+
+/* Title and heading */
+h2.text-center {
+  font-size: 28px;
+  text-align: center;
+  color:black;
+  margin-bottom: 20px;
+  font-weight: bold;
+}
+
+/* Style for form groups */
+.form-group {
+  margin-bottom: 20px;
+}
+
+/* Label style */
+label {
+  display: block;
+  margin-bottom: 8px;
+  font-size: 18px;
+  font-weight: bold;
+  color: black;
+}
+
+/* Input and select field styling */
+input.form-control, select.form-control {
+  width: 100%;
+  padding: 12px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-sizing: border-box;
+  background-color: #333;
+  color: #fff;
+  transition: border-color 0.3s;
+}
+
+input.form-control:focus, select.form-control:focus {
+  border-color: whitesmoke;
+  outline: none;
+}
+
+/* Submit button styling */
+button.btn-primary {
+  background-color: blueviolet;
+  color: white;
+  font-size: 16px;
+  padding: 12px;
+  border: none;
+  border-radius: 5px;
+  width: 100%;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+button.btn-primary:hover {
+  background-color: #e0b200;
+}
+
+/* Styling for smaller screens */
+@media (max-width: 768px) {
+  h2.text-center {
+      font-size: 24px;
+  }
+  .form-wrapper {
+      padding: 30px;
+  }
+}

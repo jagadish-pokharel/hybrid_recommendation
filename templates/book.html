@@ -1,0 +1,102 @@
+{% extends 'base.html' %}
+{% load static %}
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>{{ book_title }} - Book Details</title>
+</head>
+
+<body>
+    {% block content %}
+    <link rel="stylesheet" href="{% static 'bookks.css' %}">
+
+    <div class="book-details-container">
+        <img class="book-cover" src="{{ book.img_l }}" alt="{{ book_title }}">
+        <div class="book-info">
+            <h1>{{ book_title }}</h1>
+            <p class="author">By {{ book.book_author }}</p>
+            <p class="description">{{ book.Summary }}</p>
+        </div>
+    </div>
+
+    <div id="recommendations-prompt">
+        <h1>Want to see more like this? Generate recommendations to find your next read</h1>
+        <button id="show-recommendations">Generate Recommendations</button>
+    </div>
+
+    <div id="hybrid-recommendations" style="display: none;">
+        {% if search_type == 'ratings' %}
+            <h2>Ratings-based recommendations for {{ book_title }}.</h2>
+        {% elif search_type == 'category' %}
+            <h2>Category-based recommendations for {{ book_title }}.</h2>
+        {% elif search_type == 'aged' %}
+            <h2>Age-based recommendations for {{ book_title }}.</h2>
+        {% elif search_type == 'content' %}
+            <h2>Content-based recommendations for {{ book_title }}.</h2>
+        {% elif search_type == 'hybrid' %}
+            <h2>Hybrid recommendations for {{ book_title }}.</h2>
+        {% else %}
+            <h2>Recommendations type not recognized.</h2>
+        {% endif %}
+        <div class="book-grid">
+            {% if recommendations and recommendations|length > 0 %}
+                {% for recommendation in recommendations %}
+                    <div class="book-card">
+                        <a href="https://www.google.com/search?q={{ recommendation.book_title|urlencode }}" target="_blank">
+                            {% if recommendation.url %}
+                                <img src="{{ recommendation.url }}" alt="{{ recommendation.book_title }}">
+                            {% endif %}
+                        </a>
+                        <h3>{{ recommendation.book_title }}</h3>
+                    </div>
+                {% endfor %}
+            {% else %}
+                <p>No recommendations found.</p>
+            {% endif %}
+        </div>
+    </div>
+    <br>
+
+    <div class="third-section" id="third-section" style="display: none;">
+        <h2>Ready for something new? Search for more books to expand your literary horizons</h2>
+        <div class="search-bar">
+            <form id="searchForm" method="get" action="{% url 'search_results' %}">
+                <input type="text" name="title" id="searchInput" placeholder="Search other books." required>
+                <input type="hidden" name="search_type" value="{{ search_type }}">
+                <button type="submit">Search</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const showRecommendationsButton = document.getElementById('show-recommendations');
+            const hybridRecommendations = document.getElementById('hybrid-recommendations');
+            const recommendationsPrompt = document.getElementById('recommendations-prompt');
+            const thirdSection = document.getElementById('third-section');
+
+            if (showRecommendationsButton) {
+                showRecommendationsButton.addEventListener('click', () => {
+                    hybridRecommendations.style.display = 'block';
+                    recommendationsPrompt.style.display = 'none';
+                    thirdSection.style.display = 'block';
+                });
+            }
+
+            const searchForm = document.getElementById('searchForm');
+            if (searchForm) {
+                searchForm.addEventListener('submit', function (event) {
+                    const searchInput = document.getElementById('searchInput');
+                    if (!searchInput.value.trim()) {
+                        alert("Please enter a book title or category.");
+                        event.preventDefault();
+                    }
+                });
+            }
+        });
+    </script>
+    {% endblock %}
+</body>
+
+</html>

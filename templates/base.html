@@ -1,0 +1,58 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+
+<head>
+    {% include "head.html" %}  </head>
+
+<body>
+
+    {% block content %}
+    {% endblock %}
+
+    {% include "footer.html" %}
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            if (isLoginPageRequired()) {
+                // Prevent going back to the login page after successful login
+                window.history.pushState(null, "", window.location.href); // Add current URL to history
+                window.onbeforeunload = function () {
+                    localStorage.clear(); // Clear local storage on page refresh (optional)
+                }
+                window.history.forward(1); // Force forward navigation to prevent going back
+            }
+        });
+
+        function isLoginPageRequired() {
+            const protectedUrls = [ "/genre_selection/", "/search/", "/book_details/", "/combined_recommendations/", ]; // Add ALL your protected URL patterns
+            const currentUrl = window.location.pathname;
+
+            // Use some() for more efficient checking:
+            return protectedUrls.some(url => currentUrl.startsWith(url));
+
+
+            // OR, if you need exact matching (not just startsWith):
+            // return protectedUrls.includes(currentUrl);
+
+
+            // OR, for regular expression matching (more flexible):
+            // const protectedRegex = [/^\/home\/$/, /^\/genre_selection\/$/, /* ... */]; // Regex patterns
+            // return protectedRegex.some(regex => regex.test(currentUrl));
+        }
+        
+    window.onload = function() {
+        if (window.performance && window.performance.navigation.type === 2) {
+            window.location.href = "{% url 'login' %}";  // Forces redirect to login page
+        }
+    };
+
+
+    </script>
+
+</body>
+
+</html>

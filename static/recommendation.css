@@ -1,0 +1,63 @@
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f9f9f9;
+  margin: 0;
+  padding: 0;
+}
+.container.recommender-box {
+font-family: Arial, sans-serif;
+margin: 20px auto;
+max-width: 1200px;
+padding: 20px;
+background: #fff;
+border-radius: 8px;
+box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.recommendation-section {
+margin-bottom: 30px;
+}
+
+.recommendation-section h2, 
+.recommendation-section h3, 
+.recommendation-section h4 {
+margin-bottom: 10px;
+color: #333;
+font-size: 1.5rem;
+border-bottom: 2px solid #ddd;
+padding-bottom: 5px;
+}
+
+.recommendation-list {
+display: grid;
+grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+gap: 15px;
+padding: 0;
+list-style-type: none;
+}
+
+.recommendation-item {
+padding: 10px;
+border: 1px solid #ddd;
+border-radius: 8px;
+background-color: #f9f9f9;
+text-align: center;
+transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.recommendation-item:hover {
+transform: translateY(-5px);
+box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+}
+
+.recommendation-item img {
+max-width: 100%;
+height: auto;
+border-radius: 4px;
+}
+
+.recommendation-item h3 {
+margin-top: 10px;
+font-size: 1.2rem;
+color: #555;
+}

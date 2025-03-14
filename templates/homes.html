@@ -1,0 +1,91 @@
+{% extends 'base.html' %}
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book Recommendation System</title>
+</head>
+
+<body>
+    {% block content %}
+    <link rel="stylesheet" href="{% static 'hommme.css' %}">
+    <div class="content-wrapper">
+
+        <div class="hero">
+            <h1></h1>
+        </div>
+
+        <div class="search-bar">
+            <form id="searchForm" method="get" action="{% url 'search_results' %}">
+                <input type="text" name="title" id="searchInput" placeholder="Search for books..." required>
+                <input type="hidden" name="search_type" value="hybrid">
+                <button type="submit">Search</button>
+            </form>
+        </div>
+
+        <div class="section">
+            <h2>Genre Based Recommendations</h2>
+            <div class="book-grid">
+                {% if admin_recommendations and admin_recommendations|length > 0 %}
+                {% for book in admin_recommendations %}
+                {% if book.book_title %}
+                <div class="book-card">
+                    <a href="https://www.google.com/search?q={{ book.book_title|urlencode }}" target="_blank" rel="noopener noreferrer">
+                        <img src="{{ book.img_m }}" onerror="this.onerror=null; this.src='/static/default.jpg';"
+                            alt="Book Cover">
+                    </a>
+                    <h3>{{ book.book_title|default:'Unknown Title' }}</h3>
+                </div>
+                {% endif %}
+                {% endfor %}
+                {% else %}
+                <p>⚠️ No recommendations available at the moment.</p>
+                {% endif %}
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>Browse by Categories</h2>
+            <div class="book-grid book-grid1">
+                <a href="{% url 'ratings_page' %}" class="book-card">
+                    <img src="{% static 'ratings.jpg' %}" alt="Category 1">
+                    <h3>RATINGS</h3>
+                </a>
+                <a href="{% url 'aged_page' %}" class="book-card">
+                    <img src="{% static 'aged.avif' %}" alt="Category 2">
+                    <h3>AGE</h3>
+                </a>
+                <a href="{% url 'category_page' %}" class="book-card">
+                    <img src="{% static 'category.jpg' %}" alt="Category 3">
+                    <h3>CATEGORY</h3>
+                </a>
+                <a href="{% url 'content_page' %}" class="book-card">
+                    <img src="{% static 'content.jpg' %}" alt="Category 4">
+                    <h3>CONTENT</h3>
+                </a>
+            </div>
+        </div>
+        <br>
+
+    </div>
+
+    {% endblock %}
+    <script>
+        document.getElementById('searchForm').addEventListener('submit', function (event) {
+            const searchInput = document.getElementById('searchInput');
+
+            if (searchInput.value.trim() === "") {
+                alert("Please enter a book title or category.");
+                event.preventDefault();
+                return;
+            }
+        });
+    </script>
+
+</body>
+
+</html>

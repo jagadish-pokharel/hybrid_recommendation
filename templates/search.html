@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+{% load static %}
+<link rel="stylesheet" href="{% static 'book.css' %}">
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Search Results</title>
+</head>
+<body>
+    {% block content %}
+    <link rel="stylesheet" href="{% static 'searchedd.css' %}">
+    <div class="section">
+        {% if search_results %}
+            <h1>Here's what we found related to "{{ item }}"</h1>
+            {% if search_type == 'category' %}
+                <p>Searching by category: {{ item }}</p>
+            {% elif search_type == 'ratings' %}
+                <p>Searching by ratings related to: {{ item }}</p>
+            {% elif search_type == 'aged' %}
+                <p>Searching by aged data related to: {{ item }}</p>
+            {% elif search_type == 'content' %}
+                <p>Searching by content related to: {{ item }}</p>
+            {% endif %}
+            <p class="call-to-action">See a book you like? Click it to explore recommendations and get all the details!</p>
+            <div class="book-grid">
+                {% for book in search_results %}
+                    <div class="book-card">
+                        <a href="/book_details/{{ book.book_title|urlencode }}/?search_type={{ search_type }}">
+                            <img src="{{ book.img_l|default_if_none:'/static/default.jpg' }}" alt="{{ book.book_title }}" onerror="this.src='/static/default.jpg';">
+                            <h3>{{ book.book_title }}</h3>
+                        </a>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="no-results-container">
+                <p class="no-results-message">No books found for "{{ item }}".</p>
+            </div>
+        {% endif %}
+    </div>
+    {% endblock %}
+</body>
+</html>
